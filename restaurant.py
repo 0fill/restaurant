@@ -1,5 +1,5 @@
-import pickle, os
-import json
+import pickle
+import os
 
 
 class Restaurant:
@@ -15,29 +15,13 @@ class Restaurant:
 
     def __eq__(self, other):
         return self.address == other.address or self.ph_number == other.ph_number or self.website == other.website
-    def __contains__(self, list):
-        for i in list:
-            if i == self:
-                return True
-
-        """try:
-            data = pickle.load(open('data/restaurant.pkl', 'rb'))
-        except EOFError:
-            data = []
-        print(data)
-        #with open("data/restaurant.pkl", "wb") as file:
-           # pickle.dump(data.append(self), file)
-
-
-    def to_pickle(self):
-        with open("data/restaurant.pkl", "wb") as file:
-            pickle.dump(pickle.load(open("data/restaurant.pkl", "rb")).append(self), file)
 
     @staticmethod
-    def from_pickle():
-        with open("data/restaurant.pkl", "rb") as file:
-            return pickle.load(file)
-"""
+    def my_in (item: 'Restaurant', list):
+        for i in list:
+            if i == item:
+                return True
+        return False
 
 
 class Database:
@@ -54,9 +38,9 @@ class Database:
 
     def add(self, restaurant_name, specialization, address, website, ph_number):
         data = self.load()
-        new_R = Restaurant(restaurant_name, specialization, address, website, ph_number)
-        if new_R not in data:
-            data.append(new_R)
+        new_r = Restaurant(restaurant_name, specialization, address, website, ph_number)
+        if not Restaurant.my_in(new_r, data):
+            data.append(new_r)
             pickle.dump(data, open(self.path, "wb"))
         else:
             print("Restaurant already exists")
