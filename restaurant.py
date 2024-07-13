@@ -70,10 +70,10 @@ and they deliver to home just call {r.ph_number}""")
     @staticmethod
     def search(my_id, restaurant_name):
         data = pickle.load(open(f"data/{my_id}_restaurants.pkl", "rb"))
-        for r in data.restaurant_name:
-            if restaurant_name in r:
-                if input(f"is the restaurant you're looking for {restaurant_name}?").lower() == "y":
-                    return r
+        for r in data:
+            if restaurant_name.lower() in r.restaurant_name.lower():
+                if input(f"is the restaurant you're looking for {r.restaurant_name}?").lower() == "y":
+                    return r.restaurant_name
         return None
 
     def remove(self):  #6
@@ -89,27 +89,27 @@ and they deliver to home just call {r.ph_number}""")
         if r_name is None:
             return
         data = self.load()
-        choice = input(f"what would you like to edit?  n for name\n s for specialization\n a for address\n w for "
-                       f"website\n p for phone number")
+        choice = input(f"what would you like to edit? \n n for name\n s for specialization\n a for address\n w for "
+                       f"website\n p for phone number\n:")
         for r in data:
             if r.restaurant_name == r_name:
                 if choice == "n":
-                    r.restaurant_name = input("new restaurant name")
+                    r.restaurant_name = input("new restaurant name: ")
                 elif choice == "s":
-                    r.specialization = input("new restaurant specialization")
+                    r.specialization = input("new restaurant specialization: ")
                 elif choice == "a":
-                    r.address = input("new restaurant address")
+                    r.address = input("new restaurant address: ")
                 elif choice == "w":
-                    r.website = input("new restaurant website")
+                    r.website = input("new restaurant website: ")
                 elif choice == "p":
-                    r.ph_number = input("new restaurant phone number")
+                    r.ph_number = input("new restaurant phone number: ")
                 else:
                     return None
 
     def adv_search(self):
         data = self.load()
-        choice = input(f"what would you like to search by?  n for name\n s for specialization\n a for address\n w for "
-                       f"website\n p for phone number")
+        choice = input(f"what would you like to search by?\n n for name\n s for specialization\n a for address\n w for "
+                       f"website\n p for phone number\n: ")
         if choice == "n":
             m = lambda x: x.restaurant_name
             s = input("which restaurant you want to search: ")
@@ -128,5 +128,5 @@ and they deliver to home just call {r.ph_number}""")
         else:
             return
         for r in data:
-            if s in m(r):
-                print(r.display_restaurant_info())
+            if s.lower() in m(r).lower():
+                r.display_restaurant_info()
