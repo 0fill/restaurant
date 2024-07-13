@@ -12,6 +12,14 @@ class Restaurant:
 
     def display_restaurant_info(self):
         print(self.restaurant_name, self.specialization, self.address, self.website, self.ph_number)
+
+    def __eq__(self, other):
+        return self.address == other.address or self.ph_number == other.ph_number or self.website == other.website
+    def __contains__(self, list):
+        for i in list:
+            if i == self:
+                return True
+
         """try:
             data = pickle.load(open('data/restaurant.pkl', 'rb'))
         except EOFError:
@@ -33,21 +41,25 @@ class Restaurant:
 
 
 class Database:
-    def __init__(self, id: str):
-        while os.path.exists(f"data/{id}_restaurants.pkl"):
-            id = input("this id is already taken, please chose diffrent: ")
+    def __init__(self, id):
         self.__id = id
         self.path = f"data/{id}_restaurants.pkl"
+        if os.path.exists(self.path):
+            return
         with open(self.path, "wb") as f:
             pickle.dump([], f)
 
     def load(self):
-        return pickle.load(open(self.path), "rb")
+        return pickle.load(open(self.path, "rb"))
 
     def add(self, restaurant_name, specialization, address, website, ph_number):
         data = self.load()
-        data.append(Restaurant(restaurant_name, specialization, address, website, ph_number))
-        pickle.dump(data, open(self.path, "wb"))
+        new_R = Restaurant(restaurant_name, specialization, address, website, ph_number)
+        if new_R not in data:
+            data.append(new_R)
+            pickle.dump(data, open(self.path, "wb"))
+        else:
+            print("Restaurant already exists")
 
     def display(self):  #5
         data = self.load()
